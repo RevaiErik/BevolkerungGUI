@@ -30,7 +30,7 @@ public partial class MainWindow : Window
                 }
             }
 
-            for (int i = 1; i <= 40; i++)
+            for (int i = 1; i <= 45; i++)
             {
                 ComboBoxItem item = new ComboBoxItem();
                 item.Content = i;
@@ -401,6 +401,54 @@ public partial class MainWindow : Window
         MegoldasLista.Items.Add($"Százalékos különbség: {szazalekosKulonbseg:.00}%");
     }
 
-    #endregion
+        private void Feladat41()
+        {
+            var random = new Random();
+            MegoldasTeljes.ItemsSource = allampolgar.Where(polgar => polgar.Nemzetiseg == "török" && polgar.AktivSzavazo).OrderBy(x => Guid.NewGuid()).Take(random.Next(1,11));
+        }
+        private void Feladat42()
+        {
+            double averageBeerDrinking = allampolgar.Where(x => x.SorString != "NA").Average(x => x.SorFogyasztasEvente);
+            List<Allampolgar> aboveAverageDrinkers = allampolgar.Where(x => x.SorFogyasztasEvente > averageBeerDrinking).OrderBy(x => Guid.NewGuid()).Take(5).ToList();
+
+            MegoldasMondatos.Content = $"Az átlag sörfogyasztás értéke: {averageBeerDrinking:0.00} liter";
+            foreach (var citizen in aboveAverageDrinkers)
+            {
+                MegoldasLista.Items.Add(citizen.ToString(true));
+            }
+
+        }
+        private void Feladat43()
+        {
+            double atlagjovedelem = allampolgar.Average(x => x.NettoJovedelem);
+            var tartomanyok = allampolgar.GroupBy(tartomany => tartomany.Tartomany)
+                                         .Where(x => x.Min(m => m.NettoJovedelem) > atlagjovedelem)
+                                         .OrderBy(g => Guid.NewGuid())
+                                         .Take(2);
+
+            MegoldasLista.Items.Add($"Átlagos nettó jövedelem: {atlagjovedelem}");
+            foreach (var tartomany in tartomanyok)
+            {
+                string tartomanyNev = tartomany.Key;
+                int legkisebbJovedelem = tartomany.Min(m => m.NettoJovedelem);
+                MegoldasLista.Items.Add($"Tartomány neve: {tartomanyNev}, Legkisebb nettó jövedelem: {legkisebbJovedelem}");
+            }
+
+        }
+        private void Feladat44()
+        {
+            var unknownEducationCitizens = allampolgar.Where(c => string.IsNullOrEmpty(c.IskolaiVegzettseg)).ToList();
+
+            if (unknownEducationCitizens.Count >= 3)
+            {
+                var random = new Random();
+                MegoldasTeljes.ItemsSource = unknownEducationCitizens.OrderBy(c => random.Next()).Take(3);
+            }
+        }
+        private void Feladat45()
+        {
+           
+        }
+        #endregion
     }
 }
