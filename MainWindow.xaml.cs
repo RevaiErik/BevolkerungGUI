@@ -447,7 +447,15 @@ public partial class MainWindow : Window
         }
         private void Feladat45()
         {
-           
+            var universityWomen = allampolgar
+             .Where(a => a.IskolaiVegzettseg == "Universität" && a.Nem == "nő" && a.Nemzetiseg != "bajor")
+             .Take(5)
+             .ToList();
+
+            foreach (var woman in universityWomen)
+            {
+                MegoldasLista.Items.Add(woman.ToString());
+            }
         }
         #endregion
     }
